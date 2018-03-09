@@ -1,27 +1,40 @@
 var Twitter = require('twitter');
 var key = require("./key.json");
+const mongoose = require('mongoose')
 
+mongoose.connect('mongodb://localhost/twitter');
 var client = new Twitter(key);
 
 
-/*
+const Schema = mongoose.Schema
+ 
+const model_definition = new Schema({}, { strict: false });
 
-client.get('friends/list', function(error, tweets, response) {
-  if (!error) {
-    console.log(tweets);
-  }else{
-    console.log(error)
-  }
-});
+const Tweet = mongoose.model('Tweet', model_definition);
 
-*/
 
-client.stream('statuses/filter', {follow: '37034483'},  function(stream) {
+// client.get('friends/list', function(error, tweets, response) {
+//   if (!error) {
+//     console.log(tweets);
+//   }else{
+//     console.log(error)
+//   }
+// });
+
+
+
+client.stream('statuses/filter', {follow: '37034483,284920800,14293310,140798905,116112129'},  function(stream) {
   stream.on('data', function(tweet) {
     // console.log(tweet);
     if(isReply(tweet)){
       console.log('ignoring retweet')
     }else{
+      Tweet.create(tweet, function(err, res){
+        if(!err)
+          console.log('tweet saved')
+        else
+          console.log(err)
+      })
       console.log(tweet)
     }
   });
