@@ -13,17 +13,17 @@ const model_definition = new Schema({}, { strict: false });
 const Tweet = mongoose.model('Tweet', model_definition);
 
 
-client.get('friends/list', function(error, tweets, response) {
-  if (!error) {
-    console.log(tweets);
-  }else{
-    console.log(error)
-  }
-});
+// client.get('friends/list', function(error, tweets, response) {
+//   if (!error) {
+//     console.log(tweets);
+//   }else{
+//     console.log(error)
+//   }
+// });
 
 
 
-client.stream('statuses/filter', {follow: '37034483,284920800,14293310,140798905,116112129,194443378,134758540,1697903767'},  function(stream) {
+client.stream('statuses/filter', {follow: '37034483,284920800,14293310,140798905,116112129,194443378,134758540,1697903767,39743812,43855487,17673635'},  function(stream) {
   stream.on('data', function(tweet) {
     // console.log(tweet);
     if(isReply(tweet)){
